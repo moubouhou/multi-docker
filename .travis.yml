@@ -10,14 +10,14 @@ script:
   - docker run $DOCKER_ID/multiple-docker npm run test -- --env=jsdom --watchAll=false --coverage
 
 after_success:
+  #Log In Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  
   #Build Images
   - docker build -t docker.io/$DOCKER_ID/multiple-client ./client
   - docker build -t docker.io/$DOCKER_ID/multiple-nginx ./nginx
   - docker build -t docker.io/$DOCKER_ID/multiple-server ./server
   - docker build -t docker.io/$DOCKER_ID/multiple-worker ./worker
-
-  #Log In Docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
   #Take These Images into DOcker HUB
   - docker push $DOCKER_ID/multiple-client
