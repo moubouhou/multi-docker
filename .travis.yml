@@ -1,0 +1,26 @@
+sudo: required
+services:
+  - docker
+
+
+before_install:
+  - docker build -t moubouhou/multiple-docker -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run moubouhou/multiple-docker npm run test -- --env=jsdom --watchAll=false --coverage
+
+after_success:
+  #Build Images
+  - docker build -t moubouhou/multiple-client ./client
+  - docker build -t moubouhou/multiple-nginx ./nginx
+  - docker build -t moubouhou/multiple-server ./server
+  - docker build -t moubouhou/multiple-worker ./worker
+
+  #Log In Docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  #Take These Images into DOcker HUB
+  - docker push moubouhou/multiple-client
+  - docker push moubouhou/multiple-nginx
+  - docker push moubouhou/multiple-server
+  - docker push moubouhou/multiple-worker
