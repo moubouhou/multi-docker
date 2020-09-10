@@ -4,23 +4,23 @@ services:
 
 
 before_install:
-  - docker build -t moubouhou/multiple-docker -f ./client/Dockerfile.dev ./client
+  - docker build -t $DOCKER_ID/multiple-docker -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run moubouhou/multiple-docker npm run test -- --env=jsdom --watchAll=false --coverage
+  - docker run $DOCKER_ID/multiple-docker npm run test -- --env=jsdom --watchAll=false --coverage
 
 after_success:
   #Build Images
-  - docker build -t moubouhou/multiple-client ./client
-  - docker build -t moubouhou/multiple-nginx ./nginx
-  - docker build -t moubouhou/multiple-server ./server
-  - docker build -t moubouhou/multiple-worker ./worker
+  - docker build -t docker.io/$DOCKER_ID/multiple-client ./client
+  - docker build -t docker.io/$DOCKER_ID/multiple-nginx ./nginx
+  - docker build -t docker.io/$DOCKER_ID/multiple-server ./server
+  - docker build -t docker.io/$DOCKER_ID/multiple-worker ./worker
 
   #Log In Docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
   #Take These Images into DOcker HUB
-  - docker push moubouhou/multiple-client
-  - docker push moubouhou/multiple-nginx
-  - docker push moubouhou/multiple-server
-  - docker push moubouhou/multiple-worker
+  - docker push $DOCKER_ID/multiple-client
+  - docker push $DOCKER_ID/multiple-nginx
+  - docker push $DOCKER_ID/multiple-server
+  - docker push $DOCKER_ID/multiple-worker
