@@ -20,13 +20,13 @@ after_success:
   - docker build -t multiple-worker ./worker
   
   #Tag Images
-  - docker tag multiple-client $DOCKER_ID/multiple-client
-  - docker tag multiple-nginx $DOCKER_ID/multiple-nginx
-  - docker tag multiple-server $DOCKER_ID/multiple-server
-  - docker tag multiple-worker $DOCKER_ID/multiple-worker
+  - docker tag multiple-client docker.io/$DOCKER_ID/multiple-client
+  - docker tag multiple-nginx docker.io/$DOCKER_ID/multiple-nginx
+  - docker tag multiple-server docker.io/$DOCKER_ID/multiple-server
+  - docker tag multiple-worker docker.io/$DOCKER_ID/multiple-worker
 
   #Take These Images into DOcker HUB
-  - docker push $DOCKER_ID/multiple-client
-  - docker push $DOCKER_ID/multiple-nginx
-  - docker push $DOCKER_ID/multiple-server
-  - docker push $DOCKER_ID/multiple-worker
+  - docker push docker.io/$DOCKER_ID/multiple-client
+  - docker push docker.io/$DOCKER_ID/multiple-nginx
+  - docker push docker.io/$DOCKER_ID/multiple-server
+  - docker push docker.io/$DOCKER_ID/multiple-worker
