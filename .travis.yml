@@ -12,12 +12,18 @@ script:
 after_success:
   #Log In Docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  
+
   #Build Images
-  - docker build -t docker.io/$DOCKER_ID/multiple-client ./client
-  - docker build -t docker.io/$DOCKER_ID/multiple-nginx ./nginx
-  - docker build -t docker.io/$DOCKER_ID/multiple-server ./server
-  - docker build -t docker.io/$DOCKER_ID/multiple-worker ./worker
+  - docker build -t multiple-client ./client
+  - docker build -t multiple-nginx ./nginx
+  - docker build -t multiple-server ./server
+  - docker build -t multiple-worker ./worker
+  
+  #Tag Images
+  - docker tag multiple-client $DOCKER_ID/multiple-client
+  - docker tag multiple-nginx $DOCKER_ID/multiple-nginx
+  - docker tag multiple-server $DOCKER_ID/multiple-server
+  - docker tag multiple-worker $DOCKER_ID/multiple-worker
 
   #Take These Images into DOcker HUB
   - docker push $DOCKER_ID/multiple-client
